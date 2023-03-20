@@ -8,11 +8,12 @@ async function signup(e){
             password :e.target.password.value
         }
         console.log(signupDetails)
-        const response = axios.post('http://localhost:3000/user/signup', signupDetails);
+        const response = await axios.post('http://localhost:3000/user/signup', signupDetails);
+        console.log('hii',response.data);
         if(response.status=== 201){
             alert('User created successfully');
             window.location.href = "../Login/login.html"
-        } else if(response.status==401){
+         } else if(response.status==401){
             alert("User already exists, Please Login");
              console.log(response.data.message);
             }
