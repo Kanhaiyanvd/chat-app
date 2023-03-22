@@ -7,7 +7,7 @@ chatForm.addEventListener('submit',async (event) => {
     event.preventDefault();
     const token = localStorage.getItem('token');
     let message = {text:chatMessageInput.value};
-    const response = await axios.post("http://localhost:3000/user/chat",message,{headers: {'Authentication' :token}});
+    const response = await axios.post("http://localhost:3000/users/chat",message,{headers: {'Authentication' :token}});
     console.log(response);
     chatMessageInput.value = '';
   });

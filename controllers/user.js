@@ -75,4 +75,14 @@ exports.login= async (req,res,next)=>{
     }
 }
 
+exports.getuser= async(req,res,next)=>{
+  try{
+     const signupuser=await User.findAll()
+     res.status(201).json({message: 'Succesfully signup',users:signupuser});
+  }
+  catch(err){
+     res.status(500).json({error: err})
+  }
+}
+
 
