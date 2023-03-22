@@ -6,13 +6,12 @@ async function login(event) {
             password:event.target.password.value
         }
 
-     const response= await axios.post('http://localhost:5000/user/login',obj)
+     const response= await axios.post('http://localhost:3000/user/login',obj)
         if(response.status=201){
              alert("User Succesfully logged in")
         }
-        else{
-            throw new Error('failed to login')
-         }
+        localStorage.setItem('token', response.data.token);
+        //window.location.href = "./chat.html"
         }
     catch(err){
         document.body.innerHTML=`<div style="color:red;">${err}</div>`;
