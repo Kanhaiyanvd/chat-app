@@ -20,6 +20,9 @@ const Chat = sequelize.define('chat', {
     userName:{
         type:Sequelize.STRING,
         allowNull:false
+    },
+    groupId:{
+        type:Sequelize.INTEGER
     }
 });
 

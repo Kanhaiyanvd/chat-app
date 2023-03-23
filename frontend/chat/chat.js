@@ -3,6 +3,11 @@ const chatMessageInput = document.getElementById('chat-message');
 const userList = document.getElementById('user-list');
 const chatMessages = document.getElementById('chat-messages');
 
+const createGroupForm = document.querySelector('#create-group-form');
+const groupNameInput = document.querySelector('#group-name');
+const membersInput = document.querySelector('#members');
+const groupsList = document.querySelector('#groups');
+
 function parseJwt (token) {
   var base64Url = token.split('.')[1];
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -48,18 +53,39 @@ window.addEventListener('load', ()=>{
   getusers();
   let Details , details;
   Object.keys(localStorage).forEach((key)=>{
-    if(key!=='token'){
+    if(key!=='token' && key!=='groupId'){
       Details = localStorage.getItem(key);
       details = JSON.parse(Details);
       console.log('details', details);
       showNewUserOnScreen(details)
     }
   })
+  getGroups();
   getmessages();
 })
 
+async function getGroups(){
+  const token = localStorage.getItem('token');
+  const response = await axios.get("http://localhost:3000/users/getgroupname",{headers: {'Authentication' :token}});
+  const grpdetails = response.data.groupDetails;
+  const parent = document.querySelector('#groups');
+  for(let i=0;i<grpdetails.length;i++){
+    let child = `<li onclick="insideGroup(${grpdetails[i].groupId})">${grpdetails[i].groupName} </li>`
+    parent.innerHTML = parent.innerHTML + child
+  }
+}
+
+async function insideGroup(id){
+  try{
+    localStorage.setItem("groupId", id)
+    window.location.href = "../groupChat/groupChat.html"
+  }catch{
+    console.log('error in inside group froentend',err)
+  }
+}
+
 async function getusers(){
-    const response = await axios.get("http://localhost:3000/user/signup");
+    const response = await axios.get("http://localhost:3000/users/signup");
     
     const userlist = response.data.users;
     userlist.forEach((user) => {
@@ -97,4 +123,33 @@ function startUpdatingMessages() {
 }
 
 startUpdatingMessages();
-//const response = await axios.get(`http://localhost:4000/users/chat?currenttime=${newKey}}`);
+
+createGroupForm.addEventListener('submit', async(event)=>{
+  event.preventDefault();
+  let grpinfromation = {
+    groupName: groupNameInput.value,
+    members: membersInput.value.split(',').map(email => email.trim())
+  };
+  if(groupNameInput.value && membersInput.value){
+    try{
+      const token = localStorage.getItem('token');
+      const response =await axios.post("http://localhost:3000/group/creategrp",grpinfromation,  {headers: {'Authentication' : token}});
+      console.log(response.data.groupid);
+      if(response.status===201){
+        //add new group to grouplist
+        const parent = document.querySelector('#groups');
+        let child = `<li onclick="insideGroup(${response.data.groupid};getGroupes()">${groupNameInput.value}</li>`
+        parent.innerHTML = parent.innerHTML+ child 
+
+        groupNameInput.value = '';
+        membersInput.value='';
+      } else{
+        throw new Error(response.message);
+      }
+    } catch(error){
+      alert(error.message)
+    }
+  }else{
+    alert('Please fill out all fields.')
+  }
+})

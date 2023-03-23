@@ -6,7 +6,7 @@ async function login(event) {
             password:event.target.password.value
         }
 
-     const response= await axios.post('http://localhost:3000/user/login',obj)
+     const response= await axios.post('http://localhost:3000/users/login',obj)
         if(response.status=201){
              alert("User Succesfully logged in")
         }

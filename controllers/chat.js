@@ -9,6 +9,7 @@ exports.postChat = async(req, res, next)=>{
         message: req.body.text,
         userId:req.user.id,
         userName:req.user.name,
+        groupId: req.query.groupid,
         time: new Date().getTime()
     })
     res.status(201).json({message:'Successfully sent text'});
@@ -21,11 +22,13 @@ exports.postChat = async(req, res, next)=>{
 exports.getchat = async (req, res, next) => {
   try {
     const currentTime = req.query.currenttime;
-    console.log(currentTime)
+    const gropuId = req.query.groupid || null ; // set groupid to null if not provided in query params
+
     const messages = await Chat.findAll({
       where:{
         time:{ [Op.gt] : currentTime }
-      }
+      },
+      gropuId:gropuId
     });
     res.status(201).json({ success: true, message: messages });
   }
