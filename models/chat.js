@@ -9,6 +9,10 @@ const Chat = sequelize.define('chat', {
         allowNull : false,
         primaryKey: true
     },
+    time:{
+        type: Sequelize.BIGINT,
+        allowNull: true
+    },
     message:{
         type: Sequelize.STRING,
         allowNull: false
