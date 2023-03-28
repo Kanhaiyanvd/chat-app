@@ -143,9 +143,17 @@ createGroupForm.addEventListener('submit', async(event)=>{
 
         groupNameInput.value = '';
         membersInput.value='';
-      } else{
-        throw new Error(response.message);
-      }
+      } 
+        else if(response.status==202){
+          groupNameInput.value = '';
+          membersInput.value = '';
+         alert('You are not admin of this group,you can not add the user to the group')
+        }
+        else {
+          groupNameInput.value = '';
+          membersInput.value = '';
+          throw new Error(response.message);
+        }
     } catch(error){
       alert(error.message)
     }
