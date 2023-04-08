@@ -1,0 +1,13 @@
+whe  user logged in 
+get id from localstorage
+for post req parse the id in body
+
+for get req which does not have a body we use concept of headers, we can easily set heeaders in axios
+
+secret key - we encrypt userid to send it to backend so no one can manipulate it
+becrypt is one way hash 
+so we use token system here with the helpof jsonwebtoken
+
+query = request for result from db or can be action to db
+param = parametrs which are exchaned between db and functions or application tools
+

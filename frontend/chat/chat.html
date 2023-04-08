@@ -1,26 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.4.1/axios.min.js"></script>
+    <link rel="stylesheet" href="../public/style.css">
     <title>Chat Window</title>
+    <h1 class="h1">CHAT APP</h1>
   </head>
   <body>
+    <h2 class="h2">Common Room</h2>
     <div id="chat-window">
+      <h2 class="h3">List of Existing Users</h2>
       <div id="user-list">
         <!-- Display list of users here -->
       </div>
       <div id="chat-messages">
         <!-- Display chat messages here -->
       </div>
+      <div class="form">
       <form id="chat-form">
         <input type="text" id="chat-message" placeholder="Type your message here">
         <button type="submit">Send</button>
       </form>
     </div>
+    </div>
+    
+    
 
+    <div class="form">
     <div id="create-group-modal" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>Create Group</h2>
+        <h3>Create Group</h3>
         <form id="create-group-form">
           <label for="group-name">Group Name:</label>
           <input type="text" id="group-name" name="group-name"><br>
@@ -30,15 +40,16 @@
         </form>
       </div>
     </div>
+    </div>
 
     <div id="groups-list">
-      <h2>My Groups</h2>
+      <h2 class="h3">My Groups</h2>
       <ul id="groups">
         <!-- Groups will be dynamically added here -->
       </ul>
-    </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.4.1/axios.min.js">
-  </script>
+    </div><br><br>
+    <a class="btn" href="../Login/login.html">Logout</a>
+    <script src="http://localhost:8000/socket.io/socket.io.js"></script>
   <script src="./chat.js"></script>
 </body>
 </html>

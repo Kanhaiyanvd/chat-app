@@ -13,6 +13,7 @@ exports.makememberadmin=async (req,res,next)=>{
   try{
      const members=req.body.members;
      const admin=await UserGroup.findAll({where:{groupId:req.body.grpId,userId:req.user.id}});
+     console.log(admin);
      if(admin[0].admin){
         for (const member of members) {
 

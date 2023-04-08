@@ -121,7 +121,7 @@ clearInterval(intervalId);
 intervalId = setInterval(getmessages, 1000);
 }
 
-//startUpdatingMessages();
+startUpdatingMessages();
 
 removeMemberForm.addEventListener('submit', async(event) => {
   event.preventDefault();

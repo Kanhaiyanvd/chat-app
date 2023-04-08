@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/style.css">
     <title>SignUp</title>
+    <h1 class="h1">CHAT APP</h1>
 </head>
+<h2 class="h2">SIGN UP</h2>
 <body>
-    <form onsubmit="signup(event)">
+    <div class="form">
+     <form onsubmit="signup(event)">
         <label for="name">Name</label>
         <input type="text" name="name" id="name" required><br>
         <label for="email">Email</label>
@@ -17,8 +21,9 @@
         <label for="password">Password</label>
         <input type="password" name="password" id="password" required><br>
         <button>SignUp</button>
-    </form>
-    <a href="../Login/login.html">Existing User - Login</a>
+     </form>
+    </div>
+    <a href="../Login/login.html"><button class="btn">Existing User - Login</button></a>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="./signup.js"></script>
 </body>

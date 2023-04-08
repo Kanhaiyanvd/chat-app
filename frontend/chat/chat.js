@@ -8,6 +8,8 @@ const groupNameInput = document.querySelector('#group-name');
 const membersInput = document.querySelector('#members');
 const groupsList = document.querySelector('#groups');
 
+const socket = io('http://localhost:8000')
+
 function parseJwt (token) {
   var base64Url = token.split('.')[1];
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -20,6 +22,7 @@ function parseJwt (token) {
 chatForm.addEventListener('submit',async (event) => {
     event.preventDefault();
     const token = localStorage.getItem('token');
+    const groupId=JSON.parse(localStorage.getItem('groupId'));
     const tok = parseJwt(token);
     let message = {text:chatMessageInput.value};
     let obj = { name : tok.name, text: chatMessageInput.value}
@@ -40,6 +43,7 @@ chatForm.addEventListener('submit',async (event) => {
     
     const response = await axios.post("http://localhost:3000/users/chat",message,{headers: {'Authentication' :token}});
     console.log(response);
+    socket.emit('send-message', groupId);
     chatMessageInput.value = '';
   });
 
@@ -104,6 +108,7 @@ async function getmessages(){
   }
  const response = await axios.get(`http://localhost:3000/users/chat?currenttime=${newKey}`);
  let chatHistory = response.data.message;
+ console.log(response)
  chatMessages.innerHTML = '';
   chatHistory.forEach((chat) => {
     const chatMessageElement = document.createElement('div');
@@ -112,17 +117,27 @@ async function getmessages(){
   });
 }
 
-let intervalId;
+socket.on('receive-message', async (group) => {
+  const groupId=JSON.parse(localStorage.getItem('groupId'));
+  console.log(">>>>>",group,groupId);
+  console.log(group===groupId);
+  if(group === groupId){
+      getmessages();
+      getusers();
+  }
+})
 
-function startUpdatingMessages() {
-  // Clear any previous interval
-  clearInterval(intervalId);
+// let intervalId;
 
-  // Set new interval to call the function every 1 second
-  intervalId = setInterval(getmessages, 1000);
-}
+// function startUpdatingMessages() {
+//   // Clear any previous interval
+//   clearInterval(intervalId);
 
-startUpdatingMessages();
+//   // Set new interval to call the function every 1 second
+//   intervalId = setInterval(getmessages, 1000);
+// }
+
+// startUpdatingMessages();
 
 createGroupForm.addEventListener('submit', async(event)=>{
   event.preventDefault();
@@ -138,7 +153,7 @@ createGroupForm.addEventListener('submit', async(event)=>{
       if(response.status===201){
         //add new group to grouplist
         const parent = document.querySelector('#groups');
-        let child = `<li onclick="insideGroup(${response.data.groupid};getGroupes()">${groupNameInput.value}</li>`
+        let child = `<li onclick="insideGroup(${response.data.groupid});getGroups()">${groupNameInput.value}</li>`
         parent.innerHTML = parent.innerHTML+ child 
 
         groupNameInput.value = '';
